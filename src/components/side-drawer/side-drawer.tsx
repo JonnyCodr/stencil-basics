@@ -6,7 +6,7 @@ import { format } from '../../utils/utils';
   styleUrl: 'side-drawer.css',
   shadow: true,
 })
-export class MyComponent {
+export class SideDrawer {
   /**
    * The first name
    */
