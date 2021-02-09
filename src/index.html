@@ -5,10 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
     <title>Stencil Component Starter</title>
 
+    <style>
+      /*NOTE that when styling slots, you can ONLY style the top level element in the shadow DOM.
+        all other nested elements MUST be styled via the light DOM-- here. it does not require inline styles like this,
+        but could rather be imported as part of a css file. */
+      body {
+        font-family: sans-serif;
+      }
+
+      .side-nav ul {
+        list-style: none;
+      }
+
+      .side-nav li {
+        margin: 1rem 0;
+      }
+      .side-nav {
+        list-style: none;
+      }
+
+      .side-nav a {
+        text-decoration: none;
+        color: darkolivegreen;
+      }
+    </style>
+
     <script type="module" src="/build/stencil-basics.esm.js"></script>
     <script nomodule src="/build/stencil-basics.js"></script>
   </head>
   <body>
-    <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
+  <side-drawer title='Main Menu'>
+    <nav class='side-nav'>
+      <ul>
+        <li><a href='/'>A link</a></li>
+        <li><a href='/'>Another link</a></li>
+        <li><a href='/'>A third link</a></li>
+      </ul>
+    </nav>
+  </side-drawer>
   </body>
 </html>
