@@ -34,7 +34,8 @@
     <script nomodule src="/build/stencil-basics.js"></script>
   </head>
   <body>
-  <side-drawer title='Main Menu'>
+  <button id='side-drawer-button'>Open Side Menu</button>
+  <my-side-drawer title='Main Menu'>
     <nav class='side-nav'>
       <ul>
         <li><a href='/'>A link</a></li>
@@ -42,6 +43,16 @@
         <li><a href='/'>A third link</a></li>
       </ul>
     </nav>
-  </side-drawer>
+  </my-side-drawer>
+
+  <script>
+    const sideDrawerButton = document.querySelector('#side-drawer-button')
+    const sideDrawer = document.querySelector('my-side-drawer')
+    sideDrawerButton.addEventListener('click', () => {
+      if (!sideDrawer.open) {
+        sideDrawer.open = true;
+      }
+    })
+  </script>
   </body>
 </html>
