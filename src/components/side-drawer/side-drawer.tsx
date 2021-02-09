@@ -1,4 +1,4 @@
-import { Component, h, Prop, State } from '@stencil/core';
+import { Component, h, Method, Prop, State } from '@stencil/core';
 
 @Component({
   tag: 'my-side-drawer',
@@ -9,13 +9,18 @@ export class SideDrawer {
 
   // set from outside
   @Prop({ reflect: true }) title: string;
-  @Prop({ reflect: true, mutable: true }) open: boolean;
+  @Prop({ reflect: true, mutable: true }) opened: boolean;
 
   //changed only internally
   @State() showContactInfo = false;
 
+  @Method()
+  open() {
+    this.opened = true;
+  }
+
   onClosedDrawer() {
-    this.open = false;
+    this.opened = false;
   }
 
   onContentChanged(content: string) {

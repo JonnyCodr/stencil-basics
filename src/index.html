@@ -49,8 +49,9 @@
     const sideDrawerButton = document.querySelector('#side-drawer-button')
     const sideDrawer = document.querySelector('my-side-drawer')
     sideDrawerButton.addEventListener('click', () => {
-      if (!sideDrawer.open) {
-        sideDrawer.open = true;
+      if (!sideDrawer.opened) {
+        // sideDrawer.opened = true;
+        sideDrawer.open();
       }
     })
   </script>
