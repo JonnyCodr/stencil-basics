@@ -14,8 +14,9 @@ export class StockPrice {
     event.preventDefault();
 
     console.log(event);
-    const data = await axios.get('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo', {});
-    console.log(data);
+    const { data } = await axios.get('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo', {});
+    this.fetchedPrice = +data['Global Quote']['05. price']
+    console.log(this.fetchedPrice);
   }
 
   render() {
