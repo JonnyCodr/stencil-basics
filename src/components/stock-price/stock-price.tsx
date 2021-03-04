@@ -1,5 +1,6 @@
-import { Component, h, State } from '@stencil/core';
+import { Component, h, State, Element } from '@stencil/core';
 import axios from 'axios';
+import { AV_API_KEY } from '../../global';
 
 
 @Component({
@@ -8,13 +9,18 @@ import axios from 'axios';
   shadow: true
 })
 export class StockPrice {
+  stockInput: HTMLInputElement;
+  // @Element() el: HTMLElement;
   @State() fetchedPrice: number;
 
   async onFetchStockPrice(event: Event) {
     event.preventDefault();
-
+    // const stockSymbol = (this.el.shadowRoot.querySelector('#stock-symbol') as HTMLInputElement).value;
+    const stockSymbol = this.stockInput.value;
     console.log(event);
-    const { data } = await axios.get('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo', {});
+    const { data } =
+      await axios.get(
+        `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${AV_API_KEY}`, {});
     this.fetchedPrice = +data['Global Quote']['05. price']
     console.log(this.fetchedPrice);
   }
@@ -22,7 +28,7 @@ export class StockPrice {
   render() {
     return [
       <form onSubmit={this.onFetchStockPrice.bind(this)}>
-        <input id="stock-symbol" type='text' />
+        <input id="stock-symbol" type='text' ref={el => this.stockInput = el }/>
         <button type="submit">Fetch</button>
       </form>,
       <div>
