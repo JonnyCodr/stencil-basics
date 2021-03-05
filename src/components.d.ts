@@ -48,6 +48,7 @@ declare namespace LocalJSX {
         "title"?: string;
     }
     interface StockFinder {
+        "onSymbolSelected"?: (event: CustomEvent<string>) => void;
     }
     interface StockPrice {
         "stockSymbol"?: string;
