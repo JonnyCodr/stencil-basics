@@ -1,4 +1,5 @@
 import { Component, h } from '@stencil/core';
+import { AV_API_KEY } from '../../global';
 
 @Component({
   tag: 'stock-finder',
@@ -6,5 +7,31 @@ import { Component, h } from '@stencil/core';
   shadow: true
 })
 export class StockFinder {
+  stockNameInput: HTMLInputElement;
 
+
+  onFindStocks(event: Event) {
+    event.preventDefault();
+    const stockName = this.stockNameInput.value
+    fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${stockName}&apikey=${AV_API_KEY}`)
+      .then(res => res.json())
+      .then(parsedRes => console.log(parsedRes))
+      .catch(err => console.log(err))
+  }
+
+
+  render () {
+
+
+    return [
+      <form onSubmit={this.onFindStocks.bind(this)}>
+        <input
+          id="stock-symbol"
+          type='text'
+          ref={el => this.stockNameInput = el }
+        />
+        <button type="submit">Find</button>
+      </form>,
+    ]
+  }
 }
