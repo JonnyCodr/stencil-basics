@@ -1,5 +1,4 @@
 import { Component, h, State  /*Element*/ } from '@stencil/core';
-import axios from 'axios';
 import { AV_API_KEY } from '../../global';
 
 
@@ -14,6 +13,7 @@ export class StockPrice {
   @State() fetchedPrice: number;
   @State() stockUserInput: string;
   @State() stockInputValid = false;
+  @State() error: string;
 
   onUserInput(event: Event) {
     this.stockUserInput = (event.target as HTMLInputElement).value;
@@ -28,15 +28,36 @@ export class StockPrice {
     event.preventDefault();
     // const stockUserInput = (this.el.shadowRoot.querySelector('#stock-symbol') as HTMLInputElement).value;
     const stockSymbol = this.stockInput.value
-    console.log(event);
-    const { data } =
-      await axios.get(
-        `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${AV_API_KEY}`, {});
-    this.fetchedPrice = +data['Global Quote']['05. price']
-    console.log(this.fetchedPrice);
+
+    fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${AV_API_KEY}`)
+    .then(res => {
+      if (res.status !== 200) {
+        throw new Error('Invalid');
+      }
+      return res.json();
+    })
+      .then(data => {
+        if (!data['Global Quote']['05. price']) {
+          throw new Error('Invalid Symbol');
+        }
+        this.error = null;
+        this.fetchedPrice = +data['Global Quote']['05. price']
+      })
+      .catch( err => {
+        this.error = err.message;
+      })
   }
 
   render() {
+
+    let dataContent = null
+    if (this.error) {
+      dataContent = <p>{this.error}</p>
+    }
+    if (this.fetchedPrice) {
+      dataContent = <p>Price: ${this.fetchedPrice}</p>
+    }
+
     return [
       <form onSubmit={this.onFetchStockPrice.bind(this)}>
         <input
@@ -49,7 +70,7 @@ export class StockPrice {
         <button type="submit" disabled={!this.stockInputValid}>Fetch</button>
       </form>,
       <div>
-        <p>Price: ${this.fetchedPrice}</p>
+        {dataContent}
       </div>
     ]
   }
